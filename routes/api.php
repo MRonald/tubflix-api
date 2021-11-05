@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +24,12 @@ Route::group(['middleware' => ['apiJwt']], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
-    Route::get('/teste', function () {
-        return ['teste' => 'ok'];
+    // Categorias
+    Route::prefix('/categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/{id}', [CategoryController::class, 'show']);
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{id}', [CategoryController::class, 'store']);
+        Route::delete('/{id}', [CategoryController::class, 'destroy']);
     });
 });
