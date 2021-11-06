@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        return Category::query()->where('active', '=', true)->get();
     }
 
     /**
@@ -34,8 +34,10 @@ class CategoryController extends Controller
             $message = 'updated successfully';
             $status = 200;
         }
-        $category->active = $request->active;
-        $category->name = $request->name;
+        $category->fill($request->only([
+            'active',
+            'name',
+        ]));
         $category->save();
         return response()->json(['message' => $message], $status);
     }
@@ -62,5 +64,16 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
         return response()->json(['message' => 'deleted successfully'], 200);
+    }
+
+    public function videosCategory(int $id)
+    {
+        $category = Category::findOrFail($id);
+        $videos = $category->getVideos()->get();
+        foreach ($videos as $index => $video) {
+            $video['categories'] = $video->getCategories()->get();
+            $videos[$index] = $video;
+        }
+        return $videos;
     }
 }

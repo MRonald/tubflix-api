@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,5 +32,15 @@ Route::group(['middleware' => ['apiJwt']], function () {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{id}', [CategoryController::class, 'store']);
         Route::delete('/{id}', [CategoryController::class, 'destroy']);
+        Route::get('/{id}/videos', [CategoryController::class, 'videosCategory']);
+    });
+
+    // Videos
+    Route::prefix('/videos')->group(function () {
+        Route::get('/', [VideoController::class, 'index']);
+        Route::get('/{id}', [VideoController::class, 'show']);
+        Route::post('/', [VideoController::class, 'store']);
+        Route::put('/{id}', [VideoController::class, 'store']);
+        Route::delete('/{id}', [VideoController::class, 'destroy']);
     });
 });
