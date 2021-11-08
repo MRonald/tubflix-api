@@ -17,6 +17,7 @@ class Category extends Model
     protected $hidden = [
         'active',
         'updated_at',
+        'pivot',
     ];
 
     public function getVideos()

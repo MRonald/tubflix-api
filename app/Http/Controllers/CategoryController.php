@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\CategoryVideo;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -62,6 +63,7 @@ class CategoryController extends Controller
     public function destroy(int $id)
     {
         $category = Category::findOrFail($id);
+        CategoryVideo::query()->where('category_id', $category->id)->delete();
         $category->delete();
         return response()->json(['message' => 'deleted successfully'], 200);
     }
@@ -69,11 +71,7 @@ class CategoryController extends Controller
     public function videosCategory(int $id)
     {
         $category = Category::findOrFail($id);
-        $videos = $category->getVideos()->get();
-        foreach ($videos as $index => $video) {
-            $video['categories'] = $video->getCategories()->get();
-            $videos[$index] = $video;
-        }
+        $videos = $category->getVideos()->with('categories')->get();
         return $videos;
     }
 }
