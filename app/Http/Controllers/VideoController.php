@@ -16,7 +16,12 @@ class VideoController extends Controller
      */
     public function index(Request $request)
     {
-        return Video::where('active', '=', true)->with('categories')->paginate($request->size);
+        $size = $request->size ?? 10;
+        $order = $request->order != '' ? explode(',', $request->order) : ['id', 'asc'];
+        return Video::where('active', '=', true)
+            ->orderBy($order[0], $order[1])
+            ->with('categories')
+            ->paginate($size);
     }
 
     /**

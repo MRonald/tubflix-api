@@ -13,9 +13,13 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Category::query()->where('active', '=', true)->get();
+        $size = $request->size ?? 10;
+        $order = $request->order != '' ? explode(',', $request->order) : ['id', 'asc'];
+        return Category::where('active', '=', true)
+            ->orderBy($order[0], $order[1])
+            ->paginate($size);
     }
 
     /**
@@ -71,7 +75,7 @@ class CategoryController extends Controller
     public function videosCategory(int $id)
     {
         $category = Category::findOrFail($id);
-        $videos = $category->getVideos()->with('categories')->get();
+        $videos = $category->videos()->with('categories')->get();
         return $videos;
     }
 }

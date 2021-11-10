@@ -20,7 +20,7 @@ class Category extends Model
         'pivot',
     ];
 
-    public function getVideos()
+    public function videos()
     {
         return $this->belongsToMany(Video::class, 'category_videos');
     }
