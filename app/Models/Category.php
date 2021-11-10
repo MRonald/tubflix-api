@@ -17,9 +17,10 @@ class Category extends Model
     protected $hidden = [
         'active',
         'updated_at',
+        'pivot',
     ];
 
-    public function getVideos()
+    public function videos()
     {
         return $this->belongsToMany(Video::class, 'category_videos');
     }

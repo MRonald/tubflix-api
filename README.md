@@ -91,6 +91,7 @@ Faça um DELETE para o endpoint:
 >https://tubflix-api.herokuapp.com/api/v1/videos/{ID}
 
 *No lugar de {ID} insira o ID do vídeo (URL).
+**Ao apagar um vídeo todos os relacionamentos com ele também serão apagados.
 
 ### Adicionando categorias
 
@@ -126,3 +127,4 @@ Faça um DELETE para o endpoint:
 >https://tubflix-api.herokuapp.com/api/v1/categories/{ID}
 
 *No lugar de {ID} insira o ID do vídeo (URL).
+**Ao apagar uma categoria todos os relacionamentos com ela também serão apagados.
