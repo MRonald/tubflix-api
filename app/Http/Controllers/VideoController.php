@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CategoryVideo;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use stdClass;
 
 class VideoController extends Controller
 {
@@ -13,14 +14,14 @@ class VideoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $videos = Video::query()->where('active', '=', true)->get();
-        foreach ($videos as $index => $video) {
-            $video['categories'] = $video->getCategories()->get();
-            $videos[$index] = $video;
-        }
-        return $videos;
+        $size = $request->size ?? 10;
+        $order = $request->order != '' ? explode(',', $request->order) : ['id', 'asc'];
+        return Video::where('active', '=', true)
+            ->orderBy($order[0], $order[1])
+            ->with('categories')
+            ->paginate($size);
     }
 
     /**
@@ -53,16 +54,11 @@ class VideoController extends Controller
 
         // Caso seja atualização exclui relacionamentos anteriores
         if ($status == 200) {
-            $categoriesVideo = CategoryVideo::query()->where('video_id', '=', $video->id)->get();
-            if ($categoriesVideo) {
-                foreach ($categoriesVideo as $categoryVideo) {
-                    $categoryVideo->delete();
-                }
-            }
+            CategoryVideo::query()->where('video_id', '=', $video->id)->delete();
         }
 
         // Salvando os relacionamentos da request
-        if (count($request->categories) > 0) {
+        if ($request->categories) {
             foreach ($request->categories as $categoryVideo) {
                 CategoryVideo::create([
                     'video_id' => $video->id,
@@ -82,9 +78,7 @@ class VideoController extends Controller
      */
     public function show(int $id)
     {
-        $video = Video::findOrFail($id);
-        $video['categories'] = $video->getCategories()->get();
-        return $video;
+        return Video::findOrFail($id)->with('categories')->get();
     }
 
     /**
@@ -96,12 +90,7 @@ class VideoController extends Controller
     public function destroy(int $id)
     {
         $video = Video::findOrFail($id);
-        $categoriesVideo = CategoryVideo::query()->where('video_id', '=', $video->id)->get();
-        if ($categoriesVideo) {
-            foreach ($categoriesVideo as $categoryVideo) {
-                $categoryVideo->delete();
-            }
-        }
+        CategoryVideo::query()->where('video_id', '=', $video->id)->delete();
         $video->delete();
         return response()->json(['message' => 'deleted successfully'], 200);
     }
