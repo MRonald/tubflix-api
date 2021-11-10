@@ -40,6 +40,24 @@ Busca de categorias por ID:
 
 Busca de todos os vídeos da categoria por ID:
 >[https://tubflix-api.herokuapp.com/api/v1/categories/1/videos](https://tubflix-api.herokuapp.com/api/v1/categories/1/videos)
+
+## Paginação da API
+
+Busca ordenada vídeos:
+>[https://tubflix-api.herokuapp.com/api/v1/videos?size=5&page=2&order=title,desc](https://tubflix-api.herokuapp.com/api/v1/videos?size=5&page=2&order=title,desc)
+
+Busca ordenada categorias:
+>[https://tubflix-api.herokuapp.com/api/v1/categories?size=5&page=1&order=title,asc](https://tubflix-api.herokuapp.com/api/v1/categories?size=5&page=1&order=name,asc)
+
+Detalhes:
+>size - Define o número de itens por página.
+
+>page - Define o número da página a ser acessada.
+
+>order - Recebe dois parâmetros, o campo de ordenação dos dados e a forma de ordenação (asc ou desc).
+
+*Nenhum dos parâmetros é obrigatório.
+
 ## Manipulação de dados
 
 ### Adicionando vídeos
