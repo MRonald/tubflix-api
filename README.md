@@ -49,6 +49,9 @@ Busca ordenada vídeos:
 Busca ordenada categorias:
 >[https://tubflix-api.herokuapp.com/api/v1/categories?size=5&page=1&order=title,asc](https://tubflix-api.herokuapp.com/api/v1/categories?size=5&page=1&order=name,asc)
 
+Busca ordenada de todos os vídeos da categoria por ID:
+>[https://tubflix-api.herokuapp.com/api/v1/categories/1/videos?size=5&page=2&order=created_at,desc](https://tubflix-api.herokuapp.com/api/v1/categories/1/videos?size=5&page=2&order=created_at,desc)
+
 Detalhes:
 >size - Define o número de itens por página.
 

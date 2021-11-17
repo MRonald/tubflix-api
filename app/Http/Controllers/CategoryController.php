@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CategoryVideo;
+use App\Models\Video;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -72,10 +73,16 @@ class CategoryController extends Controller
         return response()->json(['message' => 'deleted successfully'], 200);
     }
 
-    public function videosCategory(int $id)
+    public function videosCategory(Request $request, int $id)
     {
+        $size = $request->size ?? 10;
+        $order = $request->order != '' ? explode(',', $request->order) : ['id', 'asc'];
         $category = Category::findOrFail($id);
-        $videos = $category->videos()->with('categories')->get();
-        return $videos;
+        return $category
+            ->videos()
+            ->where('active', true)
+            ->with('categories')
+            ->orderBy($order[0], $order[1])
+            ->paginate($size);
     }
 }
