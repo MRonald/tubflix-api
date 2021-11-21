@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\VideoController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,17 +44,18 @@ Route::prefix('/v1')->group(function () {
             Route::post('/', [VideoController::class, 'store']);
             Route::put('/{id}', [VideoController::class, 'store']);
             Route::delete('/{id}', [VideoController::class, 'destroy']);
+
+            Route::post('/{videoId}/view', [VideoController::class, 'view']);
         });
 
+        // Usuários
+        Route::prefix('/users')->group(function () {
+            Route::get('/', [UserController::class,'index']);
+            Route::get('/{id}', [UserController::class,'show']);
+            Route::post('/', [UserController::class,'store']);
+            Route::put('/{id}', [UserController::class,'update']);
+            Route::delete('/{id}', [UserController::class,'destroy']);
+        });
     });
-    
-    Route::prefix('/customers')->group(function () {
-        Route::get('/list', [CustomerController::class,'index']);
-        Route::post('/register', [CustomerController::class,'store']);
-        Route::get('/show/id={id}', [CustomerController::class,'show']);
-        Route::post('/edit/id={id}', [CustomerController::class,'update']);
-        Route::get('/delete/id={id}', [CustomerController::class,'destroy']);
-    });
-
 });
 

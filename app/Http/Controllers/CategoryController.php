@@ -43,8 +43,7 @@ class CategoryController extends Controller
         $category->fill($request->only([
             'active',
             'name',
-        ]));
-        $category->save();
+        ]))->save();
         return response()->json(['message' => $message], $status);
     }
 
