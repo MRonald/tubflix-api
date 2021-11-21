@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryVideo;
 use App\Models\Video;
+use App\Models\VideoView;
 use Illuminate\Http\Request;
 use stdClass;
 
@@ -48,9 +49,7 @@ class VideoController extends Controller
             'url_featured_image',
             'url_thumbnail_image',
             'url_video',
-        ]));
-
-        $video->save();
+        ]))->save();
 
         // Caso seja atualização exclui relacionamentos anteriores
         if ($status == 200) {
@@ -93,5 +92,14 @@ class VideoController extends Controller
         CategoryVideo::query()->where('video_id', '=', $video->id)->delete();
         $video->delete();
         return response()->json(['message' => 'deleted successfully'], 200);
+    }
+
+    public function view(Request $request, int $videoId)
+    {
+        VideoView::create([
+            'user_id' => $request->user_id,
+            'video_id' => $videoId,
+        ]);
+        return response()->json(['message' => 'view updated successfully'], 200);
     }
 }
