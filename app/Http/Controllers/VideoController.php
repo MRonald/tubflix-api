@@ -96,14 +96,10 @@ class VideoController extends Controller
 
     public function view(Request $request, int $videoId)
     {
-        if ($request->view) {
-            VideoView::create([
-                'user_id' => $request->user_id,
-                'video_id' => $videoId,
-            ]);
-        } else {
-            VideoView::where('user_id', $request->user_id)->where('video_id', $videoId)->delete();
-        }
+        VideoView::create([
+            'user_id' => $request->user_id,
+            'video_id' => $videoId,
+        ]);
         return response()->json(['message' => 'view updated successfully'], 200);
     }
 }
