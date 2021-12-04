@@ -46,6 +46,8 @@ Route::prefix('/v1')->group(function () {
             Route::delete('/{id}', [VideoController::class, 'destroy']);
 
             Route::post('/{videoId}/view', [VideoController::class, 'view']);
+            Route::post('/{videoId}/list', [VideoController::class, 'personList']);
+            Route::post('/{videoId}/like', [VideoController::class, 'like']);
         });
 
         // Usuários

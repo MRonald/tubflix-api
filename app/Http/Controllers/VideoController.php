@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\CategoryVideo;
+use App\Models\PersonList;
 use App\Models\Video;
+use App\Models\VideoLike;
 use App\Models\VideoView;
 use Illuminate\Http\Request;
 use stdClass;
@@ -96,10 +98,46 @@ class VideoController extends Controller
 
     public function view(Request $request, int $videoId)
     {
-        VideoView::create([
+        VideoView::updateOrCreate([
             'user_id' => $request->user_id,
             'video_id' => $videoId,
         ]);
         return response()->json(['message' => 'view updated successfully'], 200);
+    }
+
+    public function personList(Request $request, int $videoId)
+    {
+        if ($request->action == 'add') {
+            PersonList::updateOrCreate([
+                'user_id' => $request->user_id,
+                'video_id' => $videoId,
+            ]);
+
+        } elseif ($request->action == 'remove') {
+            PersonList::where('user_id', $request->user_id)->where('video_id', $videoId)->delete();
+        }
+        return response()->json(['message' => 'person list updated successfully'], 200);
+    }
+
+    public function like(Request $request, int $videoId)
+    {
+        if ($request->like) {
+            VideoLike::updateOrCreate([
+                'user_id' => $request->user_id,
+                'video_id' => $videoId,
+            ], [
+                'like' => true,
+            ]);
+        } elseif ($request->dont_like) {
+            VideoLike::updateOrCreate([
+                'user_id' => $request->user_id,
+                'video_id' => $videoId,
+            ], [
+                'like' => false,
+            ]);
+        } else {
+            VideoLike::where('user_id', $request->user_id)->where('video_id', $videoId)->delete();
+        }
+        return response()->json(['message' => 'like updated successfully'], 200);
     }
 }
