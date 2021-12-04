@@ -133,6 +133,45 @@ O user_id recebe o id do usuário que assitiu o vídeo.
 
 *No lugar de {ID} insira o ID do vídeo (URL).
 
+### Adicionando vídeo à lista pessoal
+
+Faça um POST para o seguinte endpoint:
+>https://tubflix-api.herokuapp.com/api/v1/videos/{ID}/list
+
+Modelo de corpo da requisição:
+```
+{
+	"user_id": "3",
+    "action": "add"
+}
+```
+
+O user_id recebe o id do usuário que adicionou o vídeo à sua lista.
+O parâmetro action vai adicionar ou remover o vídeo da lista de acordo com o seu valor ("add" ou "remove").
+
+*No lugar de {ID} insira o ID do vídeo (URL).
+
+### Like ou dislike no vídeo
+
+Faça um POST para o seguinte endpoint:
+>https://tubflix-api.herokuapp.com/api/v1/videos/{ID}/like
+
+Modelo de corpo da requisição:
+```
+{
+	"user_id": "3",
+    "like": true,
+    "dont_like": false,
+}
+```
+
+O user_id recebe o id do usuário que marcou o vídeo como "gostei" ou "não gostei".
+Para gravar um like, o parâmetro "like" deve ser TRUE e o "dont_like" deve ser FALSE.
+Para gravar um dislike, o parâmetro "like" deve ser FALSE e o "dont_like" deve ser TRUE.
+Para remover a avaliação do usuário sobre o vídeo, "like" e "dont_like" devem ter o valor FALSE.
+
+*No lugar de {ID} insira o ID do vídeo (URL).
+
 >### Categorias
 
 ### Adicionando categorias
